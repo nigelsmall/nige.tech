@@ -1,12 +1,20 @@
-header, footer {
-    font-family: "Courier Prime", "Courier New", "Courier", monospaced;
+html {
+    font-family: "DejaVu Sans", "Bitstream Vera Sans", "Verdana", sans-serif;
 }
-header {
+body>header, body>footer, h1, h2, h3, h4, h5, h6, code, pre, tt, .code {
+    font-family: "Courier Prime Code", "Courier Prime", "Courier New", "Courier", monospaced;
+}
+code, pre, tt, .code {
+    font-size: 14pt;
+}
+body>header {
     font-size: 40px;
     font-weight: bold;
     line-height: 1.1em;
+    position: fixed;
 }
-footer {
+body>footer {
+    font-size: 88%;
 }
 .logo {
     padding: 20px;
@@ -16,4 +24,13 @@ footer {
     top: 0;
     right: 0;
     padding: 20px;
+}
+body>header a {
+    color: #00FF3F;
+    padding: .16em 0 0 0;
+}
+body>header a:hover {
+    color: #000000;
+    background-color: #00FF3F;
+    text-decoration: none;
 }

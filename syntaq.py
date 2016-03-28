@@ -31,7 +31,7 @@ __license__ = "Apache License, Version 2.0"
 __version__ = "v2"
 
 
-app = default_app()
+application = default_app()
 
 URI_PATTERN = re.compile(r"""(?i)\b((?:[a-z][\w-]+:(?:/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))""")
 
@@ -290,7 +290,7 @@ class Heading(object):
         else:
             heading_text = self.text
             heading_id = "".join(ch if ch in "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" else "-"
-                                 for ch in heading_text.source)
+                                 for ch in heading_text.source.replace("'", ""))
             heading_id = heading_id.strip("-").lower()
             while "--" in heading_id:
                 heading_id = heading_id.replace("--", "-")
@@ -652,6 +652,11 @@ def content(name):
             return template("templates/content.html", title=document.title, body=document.html)
     except FileNotFoundError:
         abort(404)
+
+
+@get("/_fonts/<name>")
+def fonts(name):
+    return static_file(name, "fonts")
 
 
 @get("/_style/<name>.css")
