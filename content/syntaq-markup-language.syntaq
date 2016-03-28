@@ -1,0 +1,99 @@
+= Syntaq Markup Language
+
+**Syntaq** is a small publishing platform for static content that comes with its own simple and easy-to-learn markup language, based on [[http://www.wikicreole.org|Creole]].
+
+
+== Headings
+
+As with HTML, six levels of heading are supported. To denote a heading, simply begin (and optionally end) a line with between one and six //equals// signs.
+```
+= Main Heading
+== Section Heading
+=== Subsection Heading ===
+==== Level 4 Heading ====
+```
+
+
+== Emphasis
+
+Bold and italic emphasis can be applied by surrounding text with pairs of asterisks or forward slashes respectively.
+The table below shows a few combinations:
+
+|``hello, **world**``                                 | --> |hello, **world**     |
+|``hello, //world//``                                 | --> |hello, //world//     |
+|``hello, **//world//**`` \\ ``hello, //**world**//`` | --> |hello, **//world//** |
+|``This paragraph is **quite``\\``a long paragraph.``\\\\``Followed by a short one.``| --> |This paragraph is **quite\\a long paragraph.**\\\\Followed by a short one. |
+|``This sentence ~~~**does not~~~** contain any bold text``| --> |This sentence ~**does not~** contain any bold text|
+
+Note that while emphasis is continued across lines within the //same// paragraph, it does not continue into new paragraphs.
+Symbols generally used to denote emphasis can be escaped by a preceding tilde character.
+
+== Subscript & Superscript
+Superscript text is denoted by surrounding the text with double caret symbols.
+Subscript text is denoted by surrounding the text with double underscore symbols.
+
+* E = mc^^2^^
+* H__2__SO__4__
+
+
+== Quotations
+
+== Literal Text
+
+Literal text is generally denoted by //[[https://en.wikipedia.org/wiki/Grave_accent|backticks]]// and is rendered using a monospaced font.
+Double backticks denote inline literal text and triple backticks denote literal text blocks.
+
+=== Inline Literal Text
+
+Inline literal text simply requires enclosure between double backticks:
+
+|``We tried to determine values for ~``x~`` and ~``y~````| --> |We tried to determine values for ``x`` and ``y``|
+
+=== Literal Text Blocks
+
+```
+Guitar Chord C:
+
+||---|---|---|
+||-0-|---|---|
+||---|---|---|
+||---|-0-|---|
+||---|---|-0-|
+||---|---|---|
+```
+
+=== Code Blocks
+
+Literal text blocks can also be used to render code by appending a language name after the opening backticks.
+
+``` python
+class Monkey(object):
+
+    def __init__(self):
+        self.monkeying = True
+
+def foo():
+    yield "bar"
+
+def fibonacci():
+    a, b = 0, 1
+    while True:
+        a, b = b, a + b
+        yield a
+```
+
+== Images
+
+== Links
+* Explicit
+* Auto-detected
+
+Normal Link: http://wikicreole.org/ - now same link, but escaped: ~http://wikicreole.org/
+
+== Lists
+
+== Line Breaks
+
+== Horizontal Rules
+
+== Tables

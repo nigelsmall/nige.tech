@@ -1,0 +1,19 @@
+header, footer {
+    font-family: "Courier Prime", "Courier New", "Courier", monospaced;
+}
+header {
+    font-size: 40px;
+    font-weight: bold;
+    line-height: 1.1em;
+}
+footer {
+}
+.logo {
+    padding: 20px;
+}
+.twitter {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 20px;
+}

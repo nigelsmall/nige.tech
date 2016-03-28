@@ -1,0 +1,193 @@
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    font-weight: inherit;
+    font-style: inherit;
+    font-size: 100%;
+    font-family: inherit;
+    vertical-align: baseline;
+}
+/* remember to define focus styles! */
+:focus {
+    outline: 0;
+}
+html {
+    font-family: "Fira Sans", sans-serif;
+    font-size: 12pt;
+    line-height: 150%;
+    background-color: #999;
+    margin: 0;
+}
+body {
+    background-color: #E7E7E7;  /* affects sidebar */
+    color: #000000;
+    margin: 0 auto;
+    overflow-y: scroll;
+    width: 100%;
+}
+body>header {
+    position: relative;
+    background-color: #222;
+    color: #FFF;
+    display: block;
+}
+body>header a {
+    color: #00FF3F;
+}
+#sidebar {
+    display: block;
+    float: left;
+    position: relative;
+    background-color: transparent;
+    width: 300px;
+    height: 100%;
+    z-index: 1;
+}
+main {
+    background-color: #FFFFFF;
+    display: block;
+    position: relative;
+    padding: 20px 20px 20px 20px;
+    margin: 0px 0px 0px 300px;
+}
+body>footer {
+    position: relative;
+    background-color: #222;
+    color: #FFF;
+    display: block;
+    text-align: center;
+    font-style: italic;
+    padding: 1em 20px;
+}
+
+a {
+    color: #11B139;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+.hashtag {
+    color: #009F6B;
+}
+
+/* Headings */
+h1 { font-weight: bold; font-size: 2em; margin: .0 0 .4em 0; padding-bottom: .4em; border-bottom: 2px solid #E7E7E7; }
+h2 { font-weight: bold; font-size: 1.5em; margin: 1.5em 0 .4em 0; padding-bottom: .4em; border-bottom: 1px solid #E7E7E7; }
+h3 { font-weight: bold; font-size: 1.17em; margin: 1.25em 0 .4em 0; }
+h4 { font-weight: bold; font-size: 1em; margin: .75em 0 .4em 0; }
+h5 { font-weight: bold; font-size: 0.83em; margin: .75em 0 .4em 0; }
+h6 { font-weight: bold; font-size: 0.75em; margin: .75em 0 .4em 0; }
+
+h1 a,
+h2 a,
+h3 a,
+h4 a,
+h5 a,
+h6 a {
+    padding: 0 .5em;
+    visibility: hidden;
+}
+
+h1:hover a,
+h2:hover a,
+h3:hover a,
+h4:hover a,
+h5:hover a,
+h6:hover a {
+    visibility: visible;
+}
+
+h1 a:hover,
+h2 a:hover,
+h3 a:hover,
+h4 a:hover,
+h5 a:hover,
+h6 a:hover {
+    text-decoration: none;
+}
+
+code, pre, tt, .code {
+    background-color: #F0F0F0;
+    font-family: "Fira Mono", monospace;
+    line-height: 150%;
+}
+
+ol {
+    list-style: decimal inside;
+    margin-left: 1em;
+}
+ul {
+    list-style: disc inside;
+    margin-left: 1em;
+}
+
+/* Tables */
+/* tables still need 'cellspacing="0"' in the markup */
+table {
+    border-collapse: collapse;
+    margin: .75em 0;
+    border-spacing: 0;
+}
+caption, th, td {
+    text-align: left;
+    font-weight: normal;
+    border: 1px solid #CCC;
+    padding: .25em .5em;
+}
+caption, th {
+    font-style: italic;
+}
+
+/* Quotations */
+blockquote:before, blockquote:after,
+q:before, q:after {
+    content: "";
+}
+blockquote, q {
+    quotes: "" "";
+}
+
+p { margin: .75em 0; }
+em { font-style: italic; }
+strong { font-weight: bold; }
+sup { font-size: .7em; position: relative; top: -.5em; }
+sub { font-size: .7em; position: relative; bottom:-.1em; }
+
+
+/* Preformatted and code blocks */
+pre {
+    display: block;
+    border: 1px solid #CCC;
+    margin: .75em 0;
+    padding: .5em .5em .5em .75em;
+    overflow: auto;
+    cursor: text;
+}
+/*
+pre>ol {
+    list-style: decimal outside;
+    margin-left: 3em;
+    background-color: inherit;
+}
+pre>ol>li {
+    border-left: 1px solid #BBB;
+}
+pre>ol>li:hover {
+    background-color: #E7E7E7;
+}
+pre>ol>li>code {
+    color: #222;
+    margin-left: 1em;
+    background-color: inherit;
+}
+*/
