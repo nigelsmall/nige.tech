@@ -19,7 +19,7 @@
 import re
 import string
 
-from bottle import abort, get, response, run, static_file, template
+from bottle import abort, default_app, get, response, run, static_file, template
 from pygments import highlight
 from pygments.lexers import get_lexer_by_name
 from pygments.formatters.html import HtmlFormatter
@@ -30,6 +30,8 @@ __copyright__ = "2011-2016 Nigel Small"
 __license__ = "Apache License, Version 2.0"
 __version__ = "v2"
 
+
+app = default_app()
 
 URI_PATTERN = re.compile(r"""(?i)\b((?:[a-z][\w-]+:(?:/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))""")
 
