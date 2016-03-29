@@ -1,17 +1,16 @@
 html {
     font-family: "DejaVu Sans", "Bitstream Vera Sans", "Verdana", sans-serif;
 }
-body>header, body>footer, h1, h2, h3, h4, h5, h6, code, pre, tt, .code {
-    font-family: "Courier Prime Code", "Courier Prime", "Courier New", "Courier", monospaced;
+body>header {
+    font-family: "Courier Prime Code", "Courier Prime", "Courier New", "Courier", monospace;
 }
 code, pre, tt, .code {
-    font-size: 14pt;
+    font-family: "DejaVu Sans Mono", monospace;
 }
 body>header {
     font-size: 40px;
     font-weight: bold;
     line-height: 1.1em;
-    position: fixed;
 }
 body>footer {
     font-size: 88%;

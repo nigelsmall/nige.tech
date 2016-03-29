@@ -283,22 +283,26 @@ class Heading(object):
             self.level = 6
 
     @property
+    def tag(self):
+        tag = "".join(ch if ch in "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" else "-"
+                      for ch in self.text.source.replace("'", ""))
+        tag = tag.strip("-").lower()
+        while "--" in tag:
+            tag = tag.replace("--", "-")
+        return tag
+
+    @property
     def html(self):
         out = HTML()
         if self.level == 1:
             out.element("h1", html=self.text.html)
         else:
-            heading_text = self.text
-            heading_id = "".join(ch if ch in "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" else "-"
-                                 for ch in heading_text.source.replace("'", ""))
-            heading_id = heading_id.strip("-").lower()
-            while "--" in heading_id:
-                heading_id = heading_id.replace("--", "-")
-            tag = "h%d" % self.level
-            out.start_tag(tag, {"id": heading_id})
-            out.write_html(heading_text.html)
+            heading_id = self.tag
+            html_tag = "h%d" % self.level
+            out.start_tag(html_tag, {"id": heading_id})
+            out.write_html(self.text.html)
             out.element("a", {"href": "#%s" % heading_id}, raw="&sect;")
-            out.end_tag(tag)
+            out.end_tag(html_tag)
         return out.html
 
 
@@ -473,49 +477,43 @@ class Block(object):
             raise ValueError("Cannot add {0} to block of {1}".format(line.__class__.__name__, self.content_type.__name__))
 
 
-class Parser(object):
+class Article(object):
 
-    def __init__(self):
+    def __init__(self, source):
         self.blocks = []
         self.context = Block()
         self.title = None
-        self.title_level = 7
-
-    def parse(self, source):
+        self.contents = []
 
         def append(block):
             if block:
                 self.blocks.append(block)
 
-        def parse_literal(line):
-            if line.startswith(Literal.BLOCK_DELIMITER):
-                append(self.context)
-                self.context = Block()
-            else:
-                self.context.lines.append(Literal(line))
-
-        def parse_quote(line):
-            if line.startswith(Quote.BLOCK_DELIMITER):
-                append(self.context)
-                self.context = Block()
-            else:
-                self.context.lines.append(Quote(line))
-
         for line in source.splitlines(True):
             if self.context.content_type is Literal:
-                parse_literal(line)
+                if line.startswith(Literal.BLOCK_DELIMITER):
+                    append(self.context)
+                    self.context = Block()
+                else:
+                    self.context.lines.append(Literal(line))
             elif self.context.content_type is Quote:
-                parse_quote(line)
+                if line.startswith(Quote.BLOCK_DELIMITER):
+                    append(self.context)
+                    self.context = Block()
+                else:
+                    self.context.lines.append(Quote(line))
             else:
                 line = line.rstrip()
                 stripped_line = line.lstrip()
                 if Heading.check(line):
                     append(self.context)
                     self.context = Block()
-                    source = Heading(line)
-                    append(Block(Heading, lines=[source]))
-                    if not self.title or source.level < self.title_level:
-                        self.title, self.title_level = source.text.source, source.level
+                    heading = Heading(line)
+                    append(Block(Heading, lines=[heading]))
+                    if heading.level == 1:
+                        self.title = heading
+                    elif heading.level == 2:
+                        self.contents.append(heading)
                 elif line.startswith("----"):
                     append(self.context)
                     self.context = Block()
@@ -551,27 +549,12 @@ class Parser(object):
                             self.context = Block()
         append(self.context)
 
-
-class Article(object):
-
-    def __init__(self):
-        self.parser = Parser()
-        self.blocks = []
-        self.block = Block()
-
-    def parse(self, source):
-        self.parser.parse(source)
-
-    @property
-    def title(self):
-        return self.parser.title
-
     @property
     def html(self):
         # TODO: section tags for each section and subsection
         out = HTML()
         out.start_tag("article")
-        for block in self.parser.blocks:
+        for block in self.blocks:
             if block.content_type is None:
                 out.element("p", html=Text(" ".join(block.lines)).html)
             elif block.content_type in (Heading, HorizontalRule):
@@ -647,26 +630,16 @@ def content(name):
     try:
         with open("content/%s.syntaq" % name) as f:
             source = f.read()
-            document = Article()
-            document.parse(source)
-            return template("templates/content.html", title=document.title, body=document.html)
+            article = Article(source)
+            return template("templates/content.html", title=article.title, body=article.html, contents=article.contents)
     except FileNotFoundError:
         abort(404)
 
 
-@get("/_fonts/<name>")
-def fonts(name):
-    return static_file(name, "fonts")
-
-
 @get("/_style/<name>.css")
 def style(name):
-    if name == "pygments":
-        response.content_type = "text/css"
-        return HtmlFormatter().get_style_defs('.highlight')
-    else:
-        return static_file("%s.css" % name, "style")
+    return static_file("%s.css" % name, "style")
 
 
 if __name__ == "__main__":
-    run(debug=True, reloader=True)
+    run(debug=True, reloader=True, port=8000)

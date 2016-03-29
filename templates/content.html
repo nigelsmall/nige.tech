@@ -1,19 +1,29 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <link rel="stylesheet" href="http://nige.io/fonts/courier-prime-code.css">
+  <link rel="stylesheet" href="http://nige.io/fonts/dejavu-sans-mono.css">
   <link rel="stylesheet" href="/_style/syntaq.css">
   <link rel="stylesheet" href="/_style/pygments.css">
-  <link rel="stylesheet" href="/_style/courier-prime-code.css">
   <link rel="stylesheet" href="/_style/site.css">
   <meta charset="UTF-8">
-  <title>{{title}} - nige.tech</title>
+  <title>{{title.text.source}} - nige.tech</title>
 </head>
 <body>
   <header>
     <div class="logo">&gt;&nbsp;<a href="/">nige.tech</a></div>
-    <div class="twitter"><a href="https://twitter.com/technige">@technige</a>&nbsp;?</div>
+    <div class="twitter"><a href="https://twitter.com/technige">@technige</a>&nbsp;&amp;</div>
   </header>
-  <aside id="sidebar">Hello</aside>
+  <aside id="sidebar">
+    <nav class="contents">
+      <div class="title">{{!title.text.html}}</div>
+      <ul>
+        % for heading in contents:
+          <li><a href="#{{heading.tag}}">{{!heading.text.html}}</a></li>
+        % end
+      </ul>
+    </nav>
+  </aside>
   <main>{{!body}}</main>
   <footer>
     Copyright Nigel Small 2011-2016<br>
