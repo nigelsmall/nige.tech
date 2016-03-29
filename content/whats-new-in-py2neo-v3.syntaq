@@ -37,7 +37,9 @@ For example:
 Cypher results are now also retrieved lazily instead of being built into a list.
 This can help with memory usage.
 
-== Tasks/Builders Rolled into Transactions
+== Transaction Methods
+
+(Encompasses Tasks and Builders)
 
 == Composable Objects
 
