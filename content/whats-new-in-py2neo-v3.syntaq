@@ -12,16 +12,19 @@ Here's a summary of the main changes.
 
 == Bolt Support
 
-Version 3 provides support for Bolt, the new native binary protocol developed for Neo4j.
-If available, Bolt will be used automatically by the library instead of HTTP.
+Version 3 provides support for [[http://neo4j.com/docs/3.0.0-SNAPSHOT/bolt.html|Bolt]], the new native binary protocol developed for Neo4j.
+If available, Bolt will be used automatically by the library instead of the older HTTP/REST API.
 
 == Cypher Execution
 
-A significant portion of the library internals have been rewritten to allow both Bolt and HTTP to work side-by-side.
-To this end, a lot of the functionality that was previously provided by the HTTP API now uses Cypher instead.
+A significant chunk of the library's internals have been rewritten to allow [[http://neo4j.com/docs/3.0.0-SNAPSHOT/bolt.html|Bolt]] and [[http://neo4j.com/docs/3.0.0-SNAPSHOT/rest-api.html|HTTP]] to work side-by-side.
+To this end, a lot of the functionality that was previously provided by REST resources and other parts of the HTTP API now uses Cypher internally instead.
+Additionally, many of the classes involved with Cypher execution and result handling have evolved.
 
-Related to this is the new, simpler way to run Cypher queries.
-Now, instead of using ``graph.cypher.execute(...)``, you can use ``graph.run(...)``.
+=== Simple Queries
+
+Cypher queries can now be executed directly from a [[http://py2neo.org/v3/database.html#py2neo.database.Graph|``Graph``]] instance.
+Instead of using ``graph.cypher.execute(...)``, you now simply need [[http://py2neo.org/v3/database.html#py2neo.database.Graph.run|``graph.run(...)``]].
 For example:
 
 ``` python
@@ -34,12 +37,43 @@ For example:
 3
 ```
 
-Cypher results are now also retrieved lazily instead of being built into a list.
-This can help with memory usage.
+To retrieve a single value from a query, use the [[http://py2neo.org/v3/database.html#py2neo.database.Graph.evaluate|``evaluate``]] method:
 
-== Transaction Methods
+``` python
+>>> graph.evaluate("MATCH (a) WHERE a.name={x} RETURN count(a)", x="Alice")
+13
+```
 
-(Encompasses Tasks and Builders)
+=== Transactions
+
+Transactions are far more powerful in v3 than they were in v2.
+Most of the functionality previously exposed as [[http://py2neo.org/2.0/cypher.html#tasks|tasks]] and [[http://py2neo.org/2.0/cypher.html#builders|builders]] is now available directly as methods.
+Take for example [[http://py2neo.org/v3/database.html#py2neo.database.Transaction.create|Transaction.create]]:
+
+``` python
+>>> from py2neo import Graph, Node, Relationship
+>>> g = Graph(password="password")
+>>> tx = g.begin()
+>>> a = Node("Person", name="Alice")
+>>> tx.create(a)
+>>> b = Node("Person", name="Bob")
+>>> ab = Relationship(a, "KNOWS", b)
+>>> tx.create(ab)
+>>> tx.commit()
+>>> g.exists(ab)
+True
+```
+
+Transactions should also be used as a replacement for batches.
+While batches still exist as part of the [[http://py2neo.org/v3/ext/batman.html|batman]] extension, they should be considered deprecated and very, very legacy.
+To be clear: use transactions, not batches.
+
+Transactions. Not batches.
+
+=== Cursors
+
+Cypher results are now retrieved lazily instead of eagerly built into a list of records.
+Each call to [[http://py2neo.org/v3/database.html#py2neo.database.Transaction.run|``run``]] returns a [[http://py2neo.org/v3/database.html#cursors|cursor]] that provides access to the underlying data.
 
 == Composable Objects
 
