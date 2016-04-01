@@ -60,7 +60,7 @@ def image_writer(out, source):
 
 
 def script_writer(out, source):
-    return out.element("script", raw=source)
+    return out.write_raw("<%s>" % source)
 
 
 class HTML(object):
