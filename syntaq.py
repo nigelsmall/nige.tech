@@ -477,6 +477,12 @@ class Block(object):
             raise ValueError("Cannot add {0} to block of {1}".format(line.__class__.__name__, self.content_type.__name__))
 
 
+class Table(Block):
+
+    def __init__(self, metadata=None, lines=None):
+        Block.__init__(self, TableRow, metadata=metadata, lines=lines)
+
+
 class Article(object):
 
     def __init__(self, source):
@@ -513,7 +519,9 @@ class Article(object):
                     if heading.level == 1:
                         self.title = heading
                     elif heading.level == 2:
-                        self.contents.append(heading)
+                        self.contents.append((heading, []))
+                    elif heading.level == 3:
+                        self.contents[-1][-1].append(heading)
                 elif line.startswith("----"):
                     append(self.context)
                     self.context = Block()
@@ -535,7 +543,7 @@ class Article(object):
                 elif line.startswith("|"):
                     if self.context.content_type is not TableRow:
                         append(self.context)
-                        self.context = Block(TableRow)
+                        self.context = Table()
                     self.context.lines.append(TableRow(line))
                 else:
                     if self.context.content_type is not None:

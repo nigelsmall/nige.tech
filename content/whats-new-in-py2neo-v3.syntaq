@@ -10,15 +10,25 @@ $ pip install py2neo==3b1
 Lots of things have changed between py2neo v2 and py2neo v3.
 Here's a summary of the main changes.
 
-== Bolt Support
+== A New Bolt-Compatible Core
 
 Version 3 provides support for [[http://neo4j.com/docs/3.0.0-SNAPSHOT/bolt.html|Bolt]], the new native binary protocol developed for Neo4j.
 If available, Bolt will be used automatically by the library instead of the older HTTP/REST API.
+To allow [[http://neo4j.com/docs/3.0.0-SNAPSHOT/bolt.html|Bolt]] and [[http://neo4j.com/docs/3.0.0-SNAPSHOT/rest-api.html|HTTP]] to work side-by-side, a significant chunk of the library's internals have been rewritten and, by extension, a lot of the APIs have been updated.
+
+=== The DBMS
+
+In version 2, the [[http://py2neo.org/2.0/internals.html#service-root|``ServiceRoot``]] class represented a root REST resource, such as ``http://localhost:7474/``.
+This has now been replaced by the [[http://py2neo.org/v3/database.html#py2neo.database.DBMS|``DBMS``]] class which maps to a single installation of Neo4j, as opposed to the graph database exposed by the [[http://py2neo.org/v3/database.html#py2neo.database.Graph|``Graph``]] class.
+The distinction between the //graph// and the //DBMS// will become more prominent when multi-tenancy is introduced in a future Neo4j release.
+
+=== URIs & Authentication
+
+//TODO//
 
 == Cypher Execution
 
-A significant chunk of the library's internals have been rewritten to allow [[http://neo4j.com/docs/3.0.0-SNAPSHOT/bolt.html|Bolt]] and [[http://neo4j.com/docs/3.0.0-SNAPSHOT/rest-api.html|HTTP]] to work side-by-side.
-To this end, a lot of the functionality that was previously provided by REST resources and other parts of the HTTP API now uses Cypher internally instead.
+As part of the rewrite, a lot of the functionality that was previously provided by REST resources and other parts of the HTTP API now uses Cypher internally instead.
 Additionally, many of the classes involved with Cypher execution and result handling have evolved.
 
 === Simple Queries
@@ -51,16 +61,15 @@ Most of the functionality previously exposed as [[http://py2neo.org/2.0/cypher.h
 Take for example [[http://py2neo.org/v3/database.html#py2neo.database.Transaction.create|Transaction.create]]:
 
 ``` python
->>> from py2neo import Graph, Node, Relationship
->>> g = Graph(password="password")
->>> tx = g.begin()
+>>> from py2neo import Node, Relationship
+>>> tx = graph.begin()
 >>> a = Node("Person", name="Alice")
 >>> tx.create(a)
 >>> b = Node("Person", name="Bob")
 >>> ab = Relationship(a, "KNOWS", b)
 >>> tx.create(ab)
 >>> tx.commit()
->>> g.exists(ab)
+>>> graph.exists(ab)
 True
 ```
 
@@ -75,20 +84,14 @@ Transactions. Not batches.
 Cypher results are now retrieved lazily instead of eagerly built into a list of records.
 Each call to [[http://py2neo.org/v3/database.html#py2neo.database.Transaction.run|``run``]] returns a [[http://py2neo.org/v3/database.html#cursors|cursor]] that provides access to the underlying data.
 
-== Composable Objects
+== Composable Graph Objects
 
 Nodes, Relationships, Subgraphs and Walkables...
 
-== The DBMS
+== Extensions
 
-In version 2, the [[http://py2neo.org/2.0/internals.html#service-root|``ServiceRoot``]] class represented a root REST resource, such as ``http://localhost:7474/``.
-This has now been replaced by the [[http://py2neo.org/v3/database.html#py2neo.database.DBMS|``DBMS``]] class which maps to a single installation of Neo4j, as opposed to the graph database it exposes.
-The distinction between ``Graph`` and ``DBMS`` will become more important when multi-tenancy is introduced in a future Neo4j release.
+=== Batches & Manual Indexing
 
-== URIs & Authentication
-
-== Batches & Manual Indexing
+=== Spatial
 
 == Neokit
-
-== Spatial

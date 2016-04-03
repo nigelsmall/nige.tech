@@ -18,8 +18,14 @@
     <nav class="contents">
       <div class="title">{{!title.text.html}}</div>
       <ul>
-        % for heading in contents:
-          <li><a href="#{{heading.tag}}">{{!heading.text.html}}</a></li>
+        % for heading, subheadings in contents:
+          <li><a href="#{{heading.tag}}">{{!heading.text.html}}</a>
+            <ul>
+              % for subheading in subheadings:
+                <li><a href="#{{subheading.tag}}">{{!subheading.text.html}}</a></li>
+              % end
+            </ul>
+          </li>
         % end
       </ul>
     </nav>

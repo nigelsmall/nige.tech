@@ -61,12 +61,17 @@ body>header {
 .contents .title {
     font-size: 100%;
     font-weight: bold;
+    margin-bottom: .5em;
 }
 .contents ul {
-    margin: 0;
+    margin-left: 0;
+}
+.contents ul ul {
+    margin-left: 1em;
 }
 .contents li {
-    font-size: 80%;
+    font-size: 88%;
+    line-height: 176%;
 }
 main {
     background-color: #FFFFFF;
