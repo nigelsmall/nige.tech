@@ -33,3 +33,9 @@ body>header a:hover {
     background-color: #00FF3F;
     text-decoration: none;
 }
+#ampersand {
+    cursor: pointer;
+}
+#ampersand:hover {
+    color: #00FF3F;
+}

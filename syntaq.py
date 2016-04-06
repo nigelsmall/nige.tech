@@ -649,5 +649,10 @@ def style(name):
     return static_file("%s.css" % name, "style")
 
 
+@get("/_scripts/<name>.js")
+def style(name):
+    return static_file("%s.js" % name, "scripts")
+
+
 if __name__ == "__main__":
     run(debug=True, reloader=True, port=8000)
