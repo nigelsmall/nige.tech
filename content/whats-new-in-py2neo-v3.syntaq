@@ -1,14 +1,12 @@
 = What's New in Py2neo v3?
 
 Py2neo is a client library and toolkit for working with [[http://neo4j.com/|Neo4j]] from within Python applications and from the command line.
-The latest version is //v3 beta 1// and can be installed with:
+This page gives a summary of some of the main changes between versions 2 and 3.
+The new version can be installed with a simple ``pip`` command:
 
 ``` bash
 $ pip install py2neo==3b1
 ```
-
-Lots of things have changed between py2neo v2 and py2neo v3.
-Here's a summary of the main changes.
 
 == A New Bolt-Compatible Core
 
@@ -19,12 +17,32 @@ To allow [[http://neo4j.com/docs/3.0.0-SNAPSHOT/bolt.html|Bolt]] and [[http://ne
 === The DBMS
 
 In version 2, the [[http://py2neo.org/2.0/internals.html#service-root|``ServiceRoot``]] class represented a root REST resource, such as ``http://localhost:7474/``.
-This has now been replaced by the [[http://py2neo.org/v3/database.html#py2neo.database.DBMS|``DBMS``]] class which maps to a single installation of Neo4j, as opposed to the graph database exposed by the [[http://py2neo.org/v3/database.html#py2neo.database.Graph|``Graph``]] class.
+This has now been replaced by the [[http://py2neo.org/v3/database.html#py2neo.database.DBMS|``DBMS``]] class which maps to a single installation of Neo4j (as opposed to the graph database exposed by [[http://py2neo.org/v3/database.html#py2neo.database.Graph|``Graph``]]).
 The distinction between the //graph// and the //DBMS// will become more prominent when multi-tenancy is introduced in a future Neo4j release.
 
 === URIs & Authentication
 
-//TODO//
+To provide address and authentication details, the [[http://py2neo.org/v3/database.html#py2neo.database.Graph|``Graph``]] and [[http://py2neo.org/v3/database.html#py2neo.database.DBMS|``DBMS``]] constructors now accept both URIs and individual settings.
+The general constructor format is:
+
+**``Graph(*uris, **settings)``**
+
+Setting values are evaluated from left to right.
+First, each value is extracted from the URIs in the order they are provided.
+After that, the individual keyword settings are applied.
+
+For settings that are not supplied, a //localhost// default is assumed with auth disabled.
+
+The examples below show some of the possible combinations:
+
+``` python
+graph = Graph("http://camelot:7474/db/data/")
+graph = Graph("bolt://camelot:7687/")
+graph = Graph("http://arthur:excalibur@camelot:7474/db/data/")
+graph = Graph("bolt://camelot:9999/", "http://camelot:8888/", user="arthur", password="excalibur")
+graph = Graph(host="camelot", http_port=8888, bolt_port=9999, user="arthur", password="excalibur")
+graph = Graph(password="excalibur")
+```
 
 == Cypher Execution
 
