@@ -102,9 +102,37 @@ Transactions. Not batches.
 Cypher results are now retrieved lazily instead of eagerly built into a list of records.
 Each call to [[http://py2neo.org/v3/database.html#py2neo.database.Transaction.run|``run``]] returns a [[http://py2neo.org/v3/database.html#cursors|cursor]] that provides access to the underlying data.
 
-== Composable Graph Objects
+== Improved Graph Objects
 
-Nodes, Relationships, Subgraphs and Walkables...
+Py2neo v3 provides a flexible set of graph objects that can be used independently of Neo4j.
+These are:
+
+* [[http://py2neo.org/v3/types.html#py2neo.types.Subgraph|``Subgraph``]] -- general collection of nodes and relationships
+** [[http://py2neo.org/v3/types.html#py2neo.types.Walkable|``Walkable``]] -- subgraph with added traversal information
+*** [[http://py2neo.org/v3/types.html#py2neo.types.Node|``Node``]] -- a single node
+*** [[http://py2neo.org/v3/types.html#py2neo.types.Relationship|``Relationship``]] -- a single relationship
+*** [[http://py2neo.org/v3/types.html#py2neo.types.Path|``Path``]] -- history of a walk through a graph
+
+=== Composability
+
+Any instances of these objects can be combined using standard set operations.
+Take for example two relationships, ``ab`` and ``bc``:
+
+``` python
+>>> from py2neo import Node, Relationship
+>>> a = Node(name="Alice")
+>>> b = Node(name="Bob")
+>>> c = Node(name="Carol")
+>>> ab = Relationship(a, "KNOWS", b)
+>>> bc = Relationship(b, "KNOWS", c)
+```
+
+To create a subgraph that represents a collection of both relationships and the nodes they connect, use the union operator:
+
+``` python
+>>> s = ab | bc
+........
+```
 
 == Extensions
 

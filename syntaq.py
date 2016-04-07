@@ -204,7 +204,7 @@ class Text(object):
         self.source = source
         partitioner = Lexer("~",
             "http://", "https://", "ftp://", "mailto:", "<<", ">>",
-                            Quote.BLOCK_DELIMITER, "<--", "-->",
+                            Quote.BLOCK_DELIMITER, "<--", "-->", "--",
             "\\\\", "{{", "}}", Literal.INLINE_DELIMITER, Quote.INLINE_DELIMITER,
             "**", "//", "^^", "__", "[[", "]]", "|"
                             )
@@ -613,6 +613,7 @@ SIMPLE_TOKENS = {
     "\\\\": "<br>",
     "-->": "&rarr;",
     "<--": "&larr;",
+    "--": "&mdash;",
 }
 TOGGLE_TOKENS = {
     "//": "em",
